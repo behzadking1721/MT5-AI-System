@@ -1,0 +1,25 @@
+# Example module registry/config (no secrets)
+version: 1
+modules:
+  - id: M00_core
+    enabled: true
+  - id: M01_code_engine
+    enabled: true
+  - id: M02_market_data
+    enabled: true
+  - id: M03_strategy_lab
+    enabled: true
+  - id: M04_risk_manager
+    enabled: true
+  - id: M05_trade_manager
+    enabled: false  # enable only for demo after gates pass
+  - id: M06_portfolio
+    enabled: true
+  - id: M07_research
+    enabled: true
+  - id: M08_reporting
+    enabled: true
+  - id: M09_integrations
+    enabled: true
+
+mode: read_only  # read_only | demo | live (live disabled by policy)

@@ -1,0 +1,42 @@
+# Secrets and environment
+.env
+.env.*
+*.secret
+*.secrets
+*token*
+*credentials*
+config/*.yaml
+!config/*.example.yaml
+
+# Local/runtime
+logs/
+reports/
+data/samples/*
+!data/samples/.gitkeep
+data/manifests/*
+!data/manifests/.gitkeep
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+
+# IDE/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# MT5 binaries/artifacts
+*.ex5
+*.ex4
+*.tpl
+*.set
+
+# Misc
+*.log
+tmp/
+.temp/
+USERPROFILE%/

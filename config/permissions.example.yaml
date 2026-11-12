@@ -1,0 +1,16 @@
+# Permission levels example (align with MASTER_PLAN L0-L5)
+version: 1
+default_level: L1_read_only
+levels:
+  L0: { docs_read: true }
+  L1: { market_read: true, account_read: true }
+  L2: { workspace_write: true }
+  L3: { compile: true, backtest: true }
+  L4: { demo_trade: true, require_human_confirmation: true }
+  L5: { live_trade: false, require_human_confirmation: true }
+shell_access: false
+trade_requires_risk_decision: true
+trade_requires_human_confirmation: true
+allowed_symbols: []
+max_order_volume: 0.0
+emergency_stop: true

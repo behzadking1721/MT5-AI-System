@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/RiskDecision.schema.json",
+  "title": "RiskDecision",
+  "type": "object",
+  "required": ["contract_version", "decision_id", "approved", "reasons"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "decision_id": { "type": "string" },
+    "proposal_id": { "type": "string" },
+    "approved": { "type": "boolean" },
+    "volume": { "type": "number" },
+    "risk_amount": { "type": "number" },
+    "risk_percent": { "type": "number" },
+    "limits_checked": { "type": "array", "items": { "type": "string" } },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/TradeProposal.schema.json",
+  "title": "TradeProposal",
+  "type": "object",
+  "required": ["contract_version", "proposal_id", "symbol", "side", "order_type"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "proposal_id": { "type": "string" },
+    "symbol": { "type": "string" },
+    "side": { "type": "string", "enum": ["buy", "sell"] },
+    "order_type": { "type": "string", "enum": ["market", "limit", "stop"] },
+    "entry_price": { "type": ["number", "null"] },
+    "stop_loss": { "type": ["number", "null"] },
+    "take_profit": { "type": ["number", "null"] },
+    "expiration": { "type": ["string", "null"], "format": "date-time" },
+    "reason": { "type": "string" }
+  }
+}

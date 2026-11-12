@@ -1,0 +1,21 @@
+# Risk policy example (no account secrets)
+version: 1
+currency: USD
+limits:
+  max_risk_per_trade_pct: 0.5
+  max_daily_loss_pct: 2.0
+  max_total_drawdown_pct: 10.0
+  max_open_positions: 3
+  max_symbol_exposure_pct: 2.0
+sizing:
+  default_method: fixed_fractional  # fixed_monetary | fixed_fractional | atr | fractional_kelly
+  fixed_monetary_amount: 50
+  fixed_fractional_pct: 0.5
+  atr_multiplier: 1.5
+  kelly_fraction_cap: 0.25
+circuit_breaker:
+  consecutive_losses: 3
+  pause_minutes: 60
+require_stop_loss: true
+allow_martingale: false
+live_trading_enabled: false
