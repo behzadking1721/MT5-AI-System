@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/ExecutionRequest.schema.json",
+  "title": "ExecutionRequest",
+  "type": "object",
+  "required": ["contract_version", "request_id", "proposal_id", "risk_decision_id", "human_confirmation_id"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "request_id": { "type": "string" },
+    "proposal_id": { "type": "string" },
+    "risk_decision_id": { "type": "string" },
+    "human_confirmation_id": { "type": "string" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "idempotency_key": { "type": "string" }
+  }
+}

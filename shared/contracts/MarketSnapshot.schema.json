@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/MarketSnapshot.schema.json",
+  "title": "MarketSnapshot",
+  "type": "object",
+  "required": ["contract_version", "symbol", "timeframe", "timestamp", "source"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "symbol": { "type": "string" },
+    "timeframe": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "ohlcv": {
+      "type": "object",
+      "properties": {
+        "open": { "type": "number" },
+        "high": { "type": "number" },
+        "low": { "type": "number" },
+        "close": { "type": "number" },
+        "volume": { "type": "number" }
+      }
+    },
+    "source": { "type": "string" },
+    "quality": { "type": "object", "properties": { "complete": { "type": "boolean" }, "gaps": { "type": "boolean" } } }
+  }
+}

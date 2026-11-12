@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/AccountSnapshot.schema.json",
+  "title": "AccountSnapshot",
+  "type": "object",
+  "required": ["contract_version", "account_alias", "currency", "timestamp"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "account_alias": { "type": "string", "description": "Non-sensitive alias; never full account number" },
+    "currency": { "type": "string" },
+    "balance": { "type": "number" },
+    "equity": { "type": "number" },
+    "margin": { "type": "number" },
+    "free_margin": { "type": "number" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/AuditEvent.schema.json",
+  "title": "AuditEvent",
+  "type": "object",
+  "required": ["contract_version", "event_id", "actor", "timestamp", "action", "result"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "event_id": { "type": "string" },
+    "workflow_id": { "type": "string" },
+    "actor": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "action": { "type": "string" },
+    "input_summary": { "type": "object" },
+    "result": { "type": "string" }
+  }
+}
