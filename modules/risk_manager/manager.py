@@ -42,6 +42,8 @@ class RiskLimits:
     require_stop_loss: bool = True
     allow_martingale: bool = False
     live_trading_enabled: bool = False
+    atr_multiplier: float = 1.5
+    kelly_fraction_cap: float = 0.25  # fraction of full Kelly, hard-capped
 
 
 @dataclass
@@ -98,6 +100,51 @@ class RiskManager:
             return 0.0, ["invalid fractional risk inputs"]
         risk_amount = equity * (risk_percent / 100.0)
         return RiskManager.calculate_volume_fixed_monetary(risk_amount=risk_amount, **kwargs)
+
+    @staticmethod
+    def calculate_volume_atr(
+        entry: float, atr: float, atr_multiplier: float, equity: float, risk_percent: float,
+        tick_value: float, tick_size: float,
+        volume_step: float = 0.01, volume_min: float = 0.01, volume_max: float = 100.0,
+        side: str = "buy",
+    ) -> tuple[float, Optional[float], list[str]]:
+        """ATR-adjusted sizing: SL distance = atr * atr_multiplier; returns (volume, sl_price, reasons)."""
+        reasons: list[str] = []
+        if atr <= 0 or atr_multiplier <= 0:
+            return 0.0, None, ["invalid atr inputs"]
+        sl_distance = atr * atr_multiplier
+        if sl_distance <= 0:
+            return 0.0, None, ["invalid atr stop distance"]
+        sl_price = entry - sl_distance if str(side).lower() in ("buy", "long") else entry + sl_distance
+        vol, msgs = RiskManager.calculate_volume_fixed_fractional(
+            equity=equity, risk_percent=risk_percent, entry=entry, sl=sl_price,
+            tick_value=tick_value, tick_size=tick_size,
+            volume_step=volume_step, volume_min=volume_min, volume_max=volume_max,
+        )
+        reasons.extend(msgs)
+        return vol, round(sl_price, 10), reasons
+
+    @staticmethod
+    def calculate_fractional_kelly_risk_percent(
+        win_rate: float, payoff_ratio: float, fraction_cap: float = 0.25, hard_max_pct: float = 0.5,
+    ) -> tuple[float, list[str]]:
+        """Fractional Kelly as risk percent. Requires valid stats; capped by fraction and hard_max_pct."""
+        reasons: list[str] = []
+        if not (0.0 < win_rate < 1.0) or payoff_ratio <= 0:
+            return 0.0, ["invalid kelly inputs (need 0<win_rate<1, payoff_ratio>0)"]
+        p = win_rate
+        q = 1.0 - p
+        b = payoff_ratio
+        kelly = p - (q / b)  # fraction of capital
+        if kelly <= 0:
+            return 0.0, ["non-positive kelly edge; no trade size recommended"]
+        frac = min(max(kelly * fraction_cap, 0.0), 1.0)
+        pct = frac * 100.0
+        if pct > hard_max_pct:
+            pct = hard_max_pct
+            reasons.append("kelly risk capped at hard maximum")
+        reasons.append(f"kelly={kelly:.6f} fraction_applied={fraction_cap}")
+        return round(pct, 6), reasons
 
     def evaluate(self, inp: RiskInput, limits: RiskLimits | None = None) -> RiskDecision:
         limits = limits or RiskLimits()

@@ -302,6 +302,15 @@
                                                permission؛     خروجی `simulated`
                                                دمو خط لوله     (بدون ارسال سفارش)
 
+  2026-11-12     SCAFFOLD-008   آماده‌سازی    market_data      `modules/market_data/
+  22:07Z                        داده/ sizing   normalize/       prepare.py`,
+                                پیشرفته/قالب   validate/        `modules/risk_manager/
+                                MQL5           build_daily_stats manager.py` (ATR/Kelly),
+                                               + ATR/Kelly      `mql5/Experts/
+                                               sizing (pure) +  ORB_Analyzer_Template.mq5`
+                                               قالب read-only   ؛ 39/39 تست پاس
+                                               MQL5؛ تست‌ها پاس (بدون اتصال MT5/MCP)
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده

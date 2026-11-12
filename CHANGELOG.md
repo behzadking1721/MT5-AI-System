@@ -9,11 +9,13 @@ All notable changes to this project will be documented in this file.
 - Core docs: `README.md`, `.gitignore`, `DECISIONS.md`, `docs/operations/P0_ENV_CHECKLIST.md`.
 - Python package scaffold (`pyproject.toml`) with orchestrator/registry/permission gateway, MCP adapter interface and placeholder adapters, shared types.
 - Shared contracts (v1.0.0): `RiskDecision`, `TradeProposal`, `AccountSnapshot`, `MarketSnapshot`, `AuditEvent`, `ExecutionRequest`, `ExecutionResult`, `StrategyDefinition`, `BacktestRequest`, `BacktestResult`.
-- `RiskManager` safety-first implementation with `RiskLimits`, fixed monetary/fractional sizing (pure), and limit checks (per-trade %, daily loss, drawdown, open positions, exposure, consecutive-loss circuit breaker).
+- `RiskManager` safety-first implementation with `RiskLimits`, fixed monetary/fractional sizing (pure), limit checks (per-trade %, daily loss, drawdown, open positions, exposure, consecutive-loss circuit breaker), ATR-adjusted sizing helper, and Fractional Kelly risk% with hard cap.
 - `modules/strategy_lab/orb.py`: pure ORB (n-min, default 5m) analysis from paper text — OR direction, breakout entry, SL=`ATR14*fraction`, EoD TP context, universe/relative-volume filters, helpers.
+- `modules/market_data/prepare.py`: bar normalization/validation (OHLC/duplicates/gaps) and `DailyStats` builder for ORB inputs.
 - `modules/trade_manager/gateway.py`: simulation-only execution gateway (TradeProposal/Request/Result), enforces RiskDecision approval, human confirmation id, permission gate, and idempotency; `simulate_execute` only.
-- Demo scripts: `scripts/analyze_orb_demo.py`, `scripts/pipeline_demo.py` (ORB→Risk→simulated execution).
-- Test suite: `tests/safety` + `tests/unit` (27 tests, `unittest`, passing with `PYTHONPATH=.`).
+- Demo scripts: `scripts/analyze_orb_demo.py`, `scripts/pipeline_demo.py`.
+- MQL5 read-only template: `mql5/Experts/ORB_Analyzer_Template.mq5` (no order actions).
+- Test suite: `tests/safety` + `tests/unit` (39 tests, `unittest`, passing with `PYTHONPATH=.`).
 
 ### Notes
 - No MT5/MCP connection, compilation, or trading tests performed. P0 environment/security verification items remain pending per `PROJECT_STATE.md`. Live trading disabled by policy. `ssrn-4729284.pdf` present but not parsed (PDF input unsupported).
