@@ -319,6 +319,15 @@
                                                JSON؛ رفع واردات ؛ 43/43 تست پاس
                                                چرخه‌ای؛ 43/43   (بدون اتصال MT5/MCP)
 
+  2026-11-12     SCAFFOLD-010   قالب P1/MCP    `MCP_TOOL_       `docs/operations/
+  22:18Z                        inventory +    INVENTORY.md`،   MCP_TOOL_INVENTORY.md`,
+                                لودر ابزار/    `integrations/   `integrations/
+                                آداپتر پایه    inventory.py` و  inventory.py`,
+                                               آداپترهای قابل   adapters.py`،
+                                               بارگذاری ابزار   `tests/unit/test_inventory.py`
+                                               (بدون اتصال)؛    ؛ 45/45 تست پاس
+                                               45/45 تست پاس    (بدون اتصال MT5/MCP)
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده
