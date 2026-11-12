@@ -275,6 +275,16 @@
                                                8/8 passed      `unittest` OK
                                                (PYTHONPATH=.)
 
+  2026-11-12     SCAFFOLD-005   Risk limits +  RiskLimits و    `modules/risk_manager/
+  21:30Z                        قراردادهای     کنترل‌های       manager.py`,
+                                بک‌تست         per-trade/daily/ `shared/contracts/
+                                               drawdown/expo-  BacktestRequest,
+                                               sure/circuit    BacktestResult`,
+                                               breaker +       `tests/unit/test_risk_limits.py`
+                                               BacktestReq/Res ؛ 14/14 تست پاس
+                                               قراردادها؛ 14   (PYTHONPATH=.),
+                                               تست پاس         بدون اتصال MT5/MCP
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده
@@ -307,7 +317,8 @@
 ## J. نقطه توقف و دستور ادامه
 
 **آخرین کار تأییدشده:** تهیه پیش‌نویس سند مادر و فایل وضعیت.\
-**آخرین کار فنی انجام‌شده:** اسکلت مخزن/کامیت‌های محلی (`d3e8478`,`fc821cc`,`ba87153`) شامل ساختار، چک‌لیست P0، هسته و آداپترهای placeholder MCP و RiskManager stub (بدون اتصال/تست MT5).\
+**آخرین کار فنی انجام‌شده:** اسکلت مخزن/کامیت‌های محلی (تا `f4d0f25` و تغییرات SCAFFOLD-005 در حال ثبت) شامل ساختار، چک‌لیست P0، هسته، آداپترهای placeholder MCP، قراردادهای v1، RiskManager با sizing و کنترل‌های حد/سقف/circuit breaker، و 14 تست پاس (بدون اتصال/تست MT5).\
+
 **مرحله فعال:** P0 --- ثبت وضعیت و ایمن‌سازی.\
 **مانع فعلی:** اطلاعات نسخه، مسیرها، وضعیت کلید/مجوزها و وضعیت واقعی MCP از کاربر دریافت نشده است.
 

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/BacktestRequest.schema.json",
+  "title": "BacktestRequest",
+  "type": "object",
+  "required": ["contract_version", "request_id", "strategy", "symbol", "timeframe", "from", "to"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "request_id": { "type": "string" },
+    "strategy": { "$ref": "StrategyDefinition.schema.json" },
+    "symbol": { "type": "string" },
+    "timeframe": { "type": "string" },
+    "from": { "type": "string", "format": "date-time" },
+    "to": { "type": "string", "format": "date-time" },
+    "tick_model": { "type": "string" },
+    "initial_deposit": { "type": "number" },
+    "costs": {
+      "type": "object",
+      "properties": {
+        "spread": { "type": "number" },
+        "commission": { "type": "number" },
+        "swap": { "type": "number" },
+        "slippage": { "type": "number" }
+      }
+    },
+    "parameters": { "type": "object" }
+  }
+}

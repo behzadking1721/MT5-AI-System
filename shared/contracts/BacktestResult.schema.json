@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/BacktestResult.schema.json",
+  "title": "BacktestResult",
+  "type": "object",
+  "required": ["contract_version", "request_id", "run_id", "metrics"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "request_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "net_profit": { "type": "number" },
+        "profit_factor": { "type": ["number", "null"] },
+        "expected_payoff": { "type": "number" },
+        "max_drawdown_abs": { "type": "number" },
+        "max_drawdown_pct": { "type": "number" },
+        "recovery_factor": { "type": ["number", "null"] },
+        "sharpe": { "type": ["number", "null"] },
+        "sortino": { "type": ["number", "null"] },
+        "trades": { "type": "integer" }
+      }
+    },
+    "costs_applied": { "type": "object" },
+    "data_limitations": { "type": "array", "items": { "type": "string" } },
+    "trades": { "type": "array", "items": { "type": "object" } },
+    "code_hash": { "type": "string" }
+  }
+}

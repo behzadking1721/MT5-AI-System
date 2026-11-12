@@ -23,6 +23,25 @@ class RiskInput:
     volume_step: Optional[float] = None
     volume_min: Optional[float] = None
     volume_max: Optional[float] = None
+    # portfolio/state context for limit checks (all optional, fail-safe when policy requires)
+    daily_loss_pct: Optional[float] = None
+    total_drawdown_pct: Optional[float] = None
+    open_positions: Optional[int] = None
+    symbol_exposure_pct: Optional[float] = None
+    consecutive_losses: Optional[int] = None
+
+
+@dataclass
+class RiskLimits:
+    max_risk_per_trade_pct: float = 0.5
+    max_daily_loss_pct: float = 2.0
+    max_total_drawdown_pct: float = 10.0
+    max_open_positions: int = 3
+    max_symbol_exposure_pct: float = 2.0
+    max_consecutive_losses: int = 3
+    require_stop_loss: bool = True
+    allow_martingale: bool = False
+    live_trading_enabled: bool = False
 
 
 @dataclass
@@ -80,24 +99,59 @@ class RiskManager:
         risk_amount = equity * (risk_percent / 100.0)
         return RiskManager.calculate_volume_fixed_monetary(risk_amount=risk_amount, **kwargs)
 
-    def evaluate(self, inp: RiskInput) -> RiskDecision:
+    def evaluate(self, inp: RiskInput, limits: RiskLimits | None = None) -> RiskDecision:
+        limits = limits or RiskLimits()
         reasons: List[str] = []
         approved = True
-        limits = ["stop_loss_required", "no_live_trade_policy", "sizing_inputs_required"]
+        checked = ["stop_loss_required", "no_live_trade_policy", "trade_risk_limit", "daily_loss_limit", "drawdown_limit", "exposure_limit", "circuit_breaker"]
         volume = 0.0
         risk_amount = inp.risk_amount
 
+        if limits.live_trading_enabled:
+            approved = False
+            reasons.append("live trading disabled by policy")
+
+        if limits.require_stop_loss and inp.stop_loss is None:
+            approved = False
+            reasons.append("missing stop loss")
+        elif inp.stop_loss is None:
+            reasons.append("stop loss missing (not required by current policy)")
         if inp.entry_price is None:
             approved = False
             reasons.append("missing entry price")
-        if inp.stop_loss is None:
+
+        # per-trade risk percent limit
+        eff_risk_pct = inp.risk_percent
+        if eff_risk_pct is None and inp.risk_amount is not None and inp.account_equity:
+            eff_risk_pct = (inp.risk_amount / inp.account_equity) * 100.0
+        if eff_risk_pct is not None and eff_risk_pct > limits.max_risk_per_trade_pct:
             approved = False
-            reasons.append("missing stop loss")
-        elif inp.risk_percent is not None and inp.account_equity is not None:
+            reasons.append(f"risk percent {eff_risk_pct:.4f} exceeds max {limits.max_risk_per_trade_pct:.4f}")
+
+        # portfolio/state guards (reject if breached or unknown when state provided as breach context)
+        if inp.daily_loss_pct is not None and inp.daily_loss_pct >= limits.max_daily_loss_pct:
+            approved = False
+            reasons.append("daily loss limit breached")
+        if inp.total_drawdown_pct is not None and inp.total_drawdown_pct >= limits.max_total_drawdown_pct:
+            approved = False
+            reasons.append("total drawdown limit breached")
+        if inp.open_positions is not None and inp.open_positions >= limits.max_open_positions:
+            approved = False
+            reasons.append("max open positions reached")
+        if inp.symbol_exposure_pct is not None and inp.symbol_exposure_pct >= limits.max_symbol_exposure_pct:
+            approved = False
+            reasons.append("symbol exposure limit breached")
+        if inp.consecutive_losses is not None and inp.consecutive_losses >= limits.max_consecutive_losses:
+            approved = False
+            reasons.append("consecutive loss circuit breaker active")
+
+        # sizing (only if basic inputs valid)
+        can_try_sizing = approved and inp.entry_price is not None and inp.stop_loss is not None
+        if can_try_sizing and eff_risk_pct is not None and inp.account_equity is not None:
             can_size = all(v is not None for v in [inp.tick_value, inp.tick_size, inp.volume_step, inp.volume_min, inp.volume_max])
             if can_size:
                 volume, msgs = self.calculate_volume_fixed_fractional(
-                    equity=inp.account_equity, risk_percent=inp.risk_percent,
+                    equity=inp.account_equity, risk_percent=min(eff_risk_pct, limits.max_risk_per_trade_pct),
                     entry=inp.entry_price, sl=inp.stop_loss,
                     tick_value=inp.tick_value, tick_size=inp.tick_size,
                     volume_step=inp.volume_step, volume_min=inp.volume_min, volume_max=inp.volume_max,
@@ -106,9 +160,10 @@ class RiskManager:
                 if volume <= 0:
                     approved = False
                     reasons.append("sizing produced zero/invalid volume")
+                risk_amount = inp.account_equity * (min(eff_risk_pct, limits.max_risk_per_trade_pct) / 100.0)
             else:
                 reasons.append("fractional sizing inputs incomplete; volume not computed")
-        elif inp.risk_amount is not None:
+        elif can_try_sizing and inp.risk_amount is not None:
             can_size = all(v is not None for v in [inp.tick_value, inp.tick_size, inp.volume_step, inp.volume_min, inp.volume_max])
             if can_size:
                 volume, msgs = self.calculate_volume_fixed_monetary(
@@ -122,13 +177,11 @@ class RiskManager:
                     reasons.append("sizing produced zero/invalid volume")
             else:
                 reasons.append("monetary sizing inputs incomplete; volume not computed")
-        else:
+        elif can_try_sizing:
             reasons.append("no risk amount/percent provided; volume not computed")
 
         if not approved and not reasons:
             reasons.append("rejected by safety-first policy")
-        elif approved and volume == 0.0 and "volume not computed" not in " ".join(reasons):
-            reasons.append("approved preliminarily; verify sizing before any execution path")
 
         return RiskDecision(
             contract_version="1.0.0",
@@ -137,8 +190,8 @@ class RiskManager:
             approved=approved,
             volume=volume,
             risk_amount=risk_amount,
-            risk_percent=inp.risk_percent,
-            limits_checked=limits,
+            risk_percent=eff_risk_pct if eff_risk_pct is not None else inp.risk_percent,
+            limits_checked=checked,
             reasons=reasons,
             timestamp=datetime.now(timezone.utc).isoformat(),
         )

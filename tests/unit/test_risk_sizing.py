@@ -21,7 +21,7 @@ class TestRiskSizing(unittest.TestCase):
             proposal_id="p3", symbol="EURUSD", side="buy", entry_price=1.1000, stop_loss=1.0990,
             account_equity=10000.0, risk_percent=1.0,
             tick_value=1.0, tick_size=0.00001, volume_step=0.01, volume_min=0.01, volume_max=100.0,
-        ))
+        ), limits=__import__('modules.risk_manager.manager', fromlist=['RiskLimits']).RiskLimits(max_risk_per_trade_pct=1.0))
         self.assertTrue(d.approved)
         self.assertAlmostEqual(d.volume, 1.0, places=6)  # $100 risk => 1.0 lot
 
