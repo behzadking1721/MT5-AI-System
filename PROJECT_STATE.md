@@ -294,6 +294,14 @@
                                                6 تست واحد؛     بدون اتصال MT5/MCP،
                                                20/20 پاس       بدون معامله
 
+  2026-11-12     SCAFFOLD-007   اجرای گیت/    ExecutionGateway `modules/trade_manager/
+  21:58Z                        trade_manager  شبیه‌سازی‌فقط   gateway.py`,
+                                (شبیه‌سازی)    + الزامات        `tests/unit/test_trade_manager.py`,
+                                + خط لوله دمو  Risk/تأیید/      `scripts/pipeline_demo.py`
+                                ORB→Risk→Sim   idempotency/    ؛ 27/27 تست پاس و
+                                               permission؛     خروجی `simulated`
+                                               دمو خط لوله     (بدون ارسال سفارش)
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده
