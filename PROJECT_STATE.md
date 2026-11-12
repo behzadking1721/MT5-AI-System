@@ -311,6 +311,14 @@
                                                قالب read-only   ؛ 39/39 تست پاس
                                                MQL5؛ تست‌ها پاس (بدون اتصال MT5/MCP)
 
+  2026-11-12     SCAFFOLD-009   پل داده/       `pipeline.py`    `modules/strategy_lab/
+  22:12Z                        workflow/audit (payload→ORB/    pipeline.py`,
+                                               Risk)، audit     `shared/common/audit.py`,
+                                               event، store     `core/workflow_state/`,
+                                               گردش‌کار، اسکریپت `scripts/analyze_orb_payload.py`
+                                               JSON؛ رفع واردات ؛ 43/43 تست پاس
+                                               چرخه‌ای؛ 43/43   (بدون اتصال MT5/MCP)
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده
