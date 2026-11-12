@@ -259,6 +259,13 @@
                                                ایمنی‌محور و    بدون اتصال واقعی
                                                تست سینتکس     MT5/MCP
 
+  2026-11-12     SCAFFOLD-003   افزودن         4 قرارداد جدید  `shared/contracts/
+  21:12Z                        قراردادها و    + 5 تست ایمنی   Account|Market|
+                                تست‌های ایمنی  (gateway/risk)  Audit|Execution*.json`,
+                                               ؛ اجرا موفق     `tests/safety/*`,
+                                               با PYTHONPATH=. commit `db69fb0`؛
+                                               (5 passed)      `unittest` OK
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده
