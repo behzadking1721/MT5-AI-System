@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/StrategyDefinition.schema.json",
+  "title": "StrategyDefinition",
+  "type": "object",
+  "required": ["contract_version", "strategy_id", "version", "market", "timeframe"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "strategy_id": { "type": "string" },
+    "version": { "type": "string" },
+    "market": { "type": "string" },
+    "timeframe": { "type": "string" },
+    "entry_rules": { "type": "array", "items": { "type": "object" } },
+    "exit_rules": { "type": "array", "items": { "type": "object" } },
+    "filters": { "type": "array", "items": { "type": "object" } }
+  }
+}

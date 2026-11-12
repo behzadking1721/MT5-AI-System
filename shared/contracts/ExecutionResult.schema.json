@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shared/contracts/ExecutionResult.schema.json",
+  "title": "ExecutionResult",
+  "type": "object",
+  "required": ["contract_version", "request_id", "status"],
+  "properties": {
+    "contract_version": { "type": "string", "const": "1.0.0" },
+    "request_id": { "type": "string" },
+    "order_id": { "type": ["string", "integer", "null"] },
+    "deal_id": { "type": ["string", "integer", "null"] },
+    "status": { "type": "string", "enum": ["accepted", "rejected", "filled", "partial", "cancelled", "error", "simulated"] },
+    "executed_price": { "type": ["number", "null"] },
+    "slippage": { "type": ["number", "null"] },
+    "server_message": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

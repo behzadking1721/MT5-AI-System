@@ -266,6 +266,15 @@
                                                با PYTHONPATH=. commit `db69fb0`؛
                                                (5 passed)      `unittest` OK
 
+  2026-11-12     SCAFFOLD-004   گسترش Risk    sizing پولی/    `modules/risk_manager/
+  21:18Z                        Manager و      کسری (pure)،    manager.py`,
+                                قراردادها/     قراردادهای      `shared/contracts/
+                                تست‌ها         ExecutionResult ExecutionResult,
+                                               و StrategyDef،  StrategyDefinition`,
+                                               +3 تست واحد؛    `tests/unit/`,
+                                               8/8 passed      `unittest` OK
+                                               (PYTHONPATH=.)
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده
