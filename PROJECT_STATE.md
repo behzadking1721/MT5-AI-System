@@ -334,6 +334,13 @@
                                                JSON برای پل     (بدون اتصال MT5/MCP)
                                                payload
 
+  2026-11-12     SCAFFOLD-012   انتخاب Stocks  `select_stocks_  `modules/strategy_lab/
+  22:25Z                        in Play (Top-N in_play` (فیلتر selection.py`,
+                                بر اساس RV)    واجد شرایط،      `tests/unit/test_selection.py`
+                                               RV>=min، مرتب    ؛ 47/47 تست پاس
+                                               نزولی RV، top-N) (بدون اتصال MT5/MCP)
+                                               + تست واحد؛ 47/47
+
   ------------------------------------------------------------------------------
 
 ## G. موانع و خطاهای شناخته‌شده

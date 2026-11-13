@@ -8,6 +8,8 @@ Status: **in progress (local scaffold)**. Pure/testable strategy logic; no MT5 c
   - Entry at OR high/low breakout, SL = `atr14 * atr_stop_fraction` (default 10%), TP context = session close (EoD)
   - Filters: min price, min avg volume(14d), min ATR(14), Relative Volume = `ORVolume_t / mean(ORVolume_{t-14..t-1})`
   - Helpers: `atr`, `average_volume`, `relative_volume`, `opening_range_bars`
+- `selection.py`: `select_stocks_in_play` — فیلتر سیگنال‌های واجد شرایط، `RV >= min`، مرتب‌سازی نزولی RV و انتخاب top-N.
+- `pipeline.py`: `analyze_orb_from_payload` پل payload→اعتبارسنجی/آمار→سیگنال ORB (+RiskDecision اختیاری).
 
 ## Integration (future, P1/P4/P6)
 - Feed `Bar` series and `DailyStats` from MT5 Market Data/Terminal adapters (`integrations/mt5_*`) once connected read-only.
